@@ -1,21 +1,13 @@
 const sqlite = require('sqlite3').verbose();
 const path = require('path');
 
-const db = new sqlite.Database(path.join(__dirname, 'db/electrondb.sqlite3'), (err) => {
-	if (err) {
-		console.log(err);
+const db = new sqlite.Database(path.join(__dirname, 'db/busqueda_facil.sqlite3'), (err) =>{
+	if(err){
+		console.error(err);
 	}
-
 });
 
-db.on('open', () => {
-	console.log('database open');
-	db.run('CREATE TABLE IF NOT EXISTS product(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, price REAL)');
-})
-
-db.on('close', () => {
-	db.close();
-})
+db.on('close', ()=> db.close());
 
 db.query = function (sql, params) {
 	params = params || [];
@@ -31,7 +23,7 @@ db.query = function (sql, params) {
 	})
 };
 
-function getConnection() {
+function getConnection(){
 	return db;
 }
 

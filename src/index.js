@@ -1,7 +1,7 @@
-const { createWindow } = require('./main')
+const {createWindow} = require('./main.js');
 const { app } = require('electron');
-require('./database');
+const {getConnection} = require('./databases');
 
-require('electron-reload')(__dirname)
+require('electron-reload')(__dirname);
 
-app.whenReady().then(createWindow)
+app.whenReady().then(createWindow);
