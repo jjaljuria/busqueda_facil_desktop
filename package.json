@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +14,15 @@
     "bootswatch": "^5.1.2",
     "electron": "^15.1.2",
     "electron-reload": "^2.0.0-alpha.1",
+    "electron-tabs": "^0.15.0",
+    "sequelize": "^6.12.1",
+    "sequelize-cli": "^6.3.0",
     "sqlite3": "^5.0.2"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^8.11.1",
+    "@testing-library/jest-dom": "^5.16.1",
+    "jest": "^27.4.5",
+    "jsdom": "^19.0.0"
   }
 }

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<title>Busqueda Facil</title>
+	<link rel="stylesheet" href="../../node_modules/bootswatch/dist/cosmo/bootstrap.min.css">
+</head>
+
+<body>
+	<main class="container">
+		<div class="row mt-md-5">
+			<div class="col-md-6">
+				<form action="" method="post" class="card" id="productForm">
+					<div class="card-header">
+						<h2>Nuevo Producto</h2>
+					</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="mb-3 col-md-12">
+								<label for="name" class="form-label">Nombre:</label>
+								<input type="text" name="name" id="name" class="form-control">
+							</div>
+
+							<div class="mb-3 col-md-4">
+								<label for="price" class="form-label">Precio $:</label>
+								<input type="number" min="0" step="0.01" name="price" id="price" class="form-control">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-4">
+								<button class="btn btn-primary" id="buttonSave">Guardar</button>
+							</div>
+						</div>
+					</div>
+
+
+				</form>
+			</div>
+
+		</div>
+
+	</main>
+
+	<script src="./bootstrap.min.js"></script>
+	<script src="./newProducts.js"></script>
+</body>
+
+</html>

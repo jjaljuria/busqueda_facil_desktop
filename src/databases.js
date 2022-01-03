@@ -4,6 +4,8 @@ const path = require('path');
 const db = new sqlite.Database(path.join(__dirname, 'db/busqueda_facil.sqlite3'), (err) =>{
 	if(err){
 		console.error(err);
+	}else{
+		console.log('database ok');
 	}
 });
 
