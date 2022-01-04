@@ -10,5 +10,8 @@ contextBridge.exposeInMainWorld('ipc', {
 	},
 	async products(){
 		return await ipcRenderer.invoke('getProducts');
+	},
+	async currency(){
+		return await ipcRenderer.invoke('getCurrency');
 	}
 })

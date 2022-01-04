@@ -14,8 +14,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Current.init({
-    name: DataTypes.STRING,
-    price: DataTypes.REAL
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    } ,
+    price:{
+      type: DataTypes.REAL,
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'Current',

@@ -33,6 +33,12 @@ ipcMain.handle('getProducts', async ()=>{
 	return products;
 });
 
+ipcMain.handle('getCurrency', async()=>{
+	let currency = await services.getCurrency();
+	currency = currency.dataValues;
+	return {name: currency.name, price: currency.price};
+});
+
 const template = [
 	{
 		label: 'inicio',
