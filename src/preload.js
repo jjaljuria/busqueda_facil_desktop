@@ -23,5 +23,8 @@ contextBridge.exposeInMainWorld('ipc', {
 		}
 
 		return await ipcRenderer.invoke('updateExchange', {id, newValue});
-	}
+	},
+	async searchProduct(nameProduct){
+		return await ipcRenderer.invoke('searchProduct', nameProduct);
+	},
 })

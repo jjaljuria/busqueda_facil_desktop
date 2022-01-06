@@ -10,7 +10,7 @@ window.addEventListener('load', async ()=>{
 			<tr>
 				<td> ${product.dataValues.name} </td>
 				<td> ${product.dataValues.price} </td>
-				<td> ${product.dataValues.price * currency.price}
+				<td> ${(product.dataValues.price * currency.price).toFixed(2)}
 			</tr>
 		`;
 	});
@@ -37,4 +37,24 @@ exchangeUpdate.addEventListener('click', async (event)=>{
 	const exchangeValue = exchangeInput.value;
 	const newExchangeValue = await window.ipc.updateExchange({id: exchangeInput.dataset.id , newValue: exchangeValue});
 	console.log(newExchangeValue);
+})
+
+searchButton.addEventListener('click', async ()=>{
+	const searchValue = searchText.value;
+	
+	const result = await window.ipc.searchProduct(searchValue);
+	const currency = await window.ipc.currency();
+
+	let html = '';
+	result.forEach(product =>{
+		html += `
+			<tr>
+				<td> ${product.dataValues.name} </td>
+				<td> ${product.dataValues.price} </td>
+				<td> ${(product.dataValues.price * currency.price).toFixed(2)}
+			</tr>
+		`;
+	});
+
+	productsTable.innerHTML = html;
 })

@@ -43,7 +43,11 @@ ipcMain.handle('getCurrency', async()=>{
 ipcMain.handle('updateExchange', async (event, {id, newValue})=>{
 	const currencyUpdated = await currencyServices.updateExchange({id, newValue});
 	return currencyUpdated;
-})
+});
+
+ipcMain.handle('searchProduct', async (event, nameProduct)=>{
+	return await services.searchProduct(nameProduct);
+});
 
 const template = [
 	{
