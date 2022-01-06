@@ -1,6 +1,7 @@
 const { BrowserWindow, ipcMain, Menu, app } = require('electron');
 const path = require('path');
 const services = require('./services/product');
+const currencyServices = require('./services/currency');
 
 ipcMain.handle('search', async (event, search) => {
 	return search.text;
@@ -36,8 +37,13 @@ ipcMain.handle('getProducts', async ()=>{
 ipcMain.handle('getCurrency', async()=>{
 	let currency = await services.getCurrency();
 	currency = currency.dataValues;
-	return {name: currency.name, price: currency.price};
+	return {name: currency.name, price: currency.price, id: currency.id};
 });
+
+ipcMain.handle('updateExchange', async (event, {id, newValue})=>{
+	const currencyUpdated = await currencyServices.updateExchange({id, newValue});
+	return currencyUpdated;
+})
 
 const template = [
 	{

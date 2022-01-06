@@ -13,5 +13,15 @@ contextBridge.exposeInMainWorld('ipc', {
 	},
 	async currency(){
 		return await ipcRenderer.invoke('getCurrency');
+	},
+	async updateExchange({id, newValue}){
+		try{
+			newValue = parseFloat(newValue);
+			id = parseInt(id);
+		}catch(err){
+			console.error('Not valid newValue or id not valid', err);
+		}
+
+		return await ipcRenderer.invoke('updateExchange', {id, newValue});
 	}
 })
