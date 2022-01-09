@@ -12,7 +12,7 @@ function createWindowMain() {
 	window.loadFile('src/ui/index.html');
 }
 
-function createWindow(){
+function createWindow() {
 	const window = new BrowserWindow({
 		width: 800,
 		height: 600,
@@ -25,29 +25,31 @@ function createWindow(){
 }
 
 ipcMain.handle('saveProduct', async (event, { name, price }) => {
-	const product = await services.saveProduct({name, price});
+	const product = await services.saveProduct({ name, price });
 	return product;
 });
 
-ipcMain.handle('getProducts', async ()=>{
+ipcMain.handle('getProducts', async () => {
 	const products = await services.getProducts();
 	return products;
 });
 
-ipcMain.handle('getCurrency', async()=>{
+ipcMain.handle('getCurrency', async () => {
 	let currency = await services.getCurrency();
 	currency = currency.dataValues;
-	return {name: currency.name, price: currency.price, id: currency.id};
+	return { name: currency.name, price: currency.price, id: currency.id };
 });
 
-ipcMain.handle('updateExchange', async (event, {id, newValue})=>{
-	const currencyUpdated = await currencyServices.updateExchange({id, newValue});
+ipcMain.handle('updateExchange', async (event, { id, newValue }) => {
+	const currencyUpdated = await currencyServices.updateExchange({ id, newValue });
 	return currencyUpdated;
 });
 
-ipcMain.handle('searchProduct', async (event, nameProduct)=>{
+ipcMain.handle('searchProduct', async (event, nameProduct) => {
 	return await services.searchProduct(nameProduct);
 });
+
+ipcMain.handle('paginate', async (event, config) => await services.paginate(config));
 
 const template = [
 	{
