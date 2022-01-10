@@ -51,6 +51,8 @@ ipcMain.handle('searchProduct', async (event, nameProduct) => {
 
 ipcMain.handle('paginate', async (event, config) => await services.paginate(config));
 
+ipcMain.handle('updateNameProduct', async (event, id, name)=> await services.updateProductName(id, name));
+
 const template = [
 	{
 		label: 'inicio',

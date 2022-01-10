@@ -57,10 +57,16 @@ const paginate = async ({pages=10, offset})=>{
 	}
 }
 
+const updateProductName = async (id, name) =>{
+	const result = await Product.update({name}, {where: {id}});
+	return Boolean(result);
+}
+
 module.exports = {
 	saveProduct,
 	getProducts,
 	getCurrency,
 	searchProduct,
 	paginate,
+	updateProductName,
 }

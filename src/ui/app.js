@@ -15,7 +15,7 @@ window.addEventListener('load', async () => {
 	const products = await window.ipc.products();
 	exchangeInput.value = currency.price;
 	exchangeInput.dataset.id = currency.id;
-
+	console.log(products);
 	renderProducts(products, currency, productsTable);
 	//renderPagination(pages, pageItemsContainer);
 	
@@ -26,14 +26,49 @@ const renderProducts = (products,currency, container) => {
 
 	products.forEach((product) => {
 		html += `
-			<tr>
-				<td> ${product.dataValues.name} </td>
+			<tr id="product-${product.dataValues.id}">
+				<td id="product-name-${product.dataValues.id}">
+					<button class="btn btn-sm btn-danger rounded-circle" onclick="deleteProduct(${product.dataValues.id})"><i class="fa fa-trash-alt"></i></button>
+					<button class="btn btn-sm btn-secondary rounded-circle" onclick="editProductName(${product.dataValues.id})"><i class="fa fa-pen"></i></button> 
+					<span class="product-name">${product.dataValues.name}<span></td>
 				<td> ${product.dataValues.price} </td>
 				<td> ${(product.dataValues.price * currency.price).toFixed(2)}
 			</tr>
 		`;
 	});
 	container.innerHTML = html;
+}
+
+function deleteProduct(id){
+	alert(id);
+}
+
+function editProductName(id){
+
+	const productNameRow = document.getElementById('product-name-' + id);
+	const productNameCell = productNameRow.querySelector('span.product-name');
+
+	productNameRow.innerHTML = `
+		<button class="btn btn-sm btn-danger rounded-circle" onclick="deleteProduct(${id}})"><i class="fa fa-trash-alt"></i></button>
+		<button class="btn btn-sm btn-secondary rounded-circle" onclick="saveProductNameEdited(${id})"><i class="fa fa-save"></i></button> 
+		<input type="text" value="${productNameCell.textContent.trim()}"/>
+	`;
+}
+
+async function saveProductNameEdited(id){
+	const productNameRow = document.getElementById('product-name-' + id);
+	const productName = productNameRow.querySelector('input').value;
+	
+	const result = await ipcRenderer.invoke('updateNameProduct', id, productName);
+	if(result){
+		alert('ok');
+	}
+
+	productNameRow.innerHTML = `
+		<button class="btn btn-sm btn-danger rounded-circle" onclick="deleteProduct(${id}})"><i class="fa fa-trash-alt"></i></button>
+		<button class="btn btn-sm btn-secondary rounded-circle" onclick="editProductName(${id})"><i class="fa fa-pen"></i></button>
+		<span class="product-name">${productName.trim()}</span>
+	`;
 }
 
 function renderPagination(pages, container){
