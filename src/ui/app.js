@@ -39,8 +39,16 @@ const renderProducts = (products,currency, container) => {
 	container.innerHTML = html;
 }
 
-function deleteProduct(id){
-	alert(id);
+async function deleteProduct(id){
+
+	const result = await ipcRenderer.invoke('deleteProduct', id);
+
+	if(!result){
+		alert('Error when delete product');
+	}
+
+	const productNameRow = document.getElementById('product-' + id);
+	productNameRow.remove();
 }
 
 function editProductName(id){

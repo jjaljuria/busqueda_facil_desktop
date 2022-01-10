@@ -62,6 +62,11 @@ const updateProductName = async (id, name) =>{
 	return Boolean(result);
 }
 
+const deleteProduct = async (id) =>{
+	const result = await Product.destroy({where: {id}});
+	return Boolean(result);
+}
+
 module.exports = {
 	saveProduct,
 	getProducts,
@@ -69,4 +74,5 @@ module.exports = {
 	searchProduct,
 	paginate,
 	updateProductName,
+	deleteProduct,
 }
