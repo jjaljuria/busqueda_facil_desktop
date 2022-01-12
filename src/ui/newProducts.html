@@ -7,6 +7,7 @@
 	<title>Document</title>
 	<title>Busqueda Facil</title>
 	<link rel="stylesheet" href="../../node_modules/bootswatch/dist/cosmo/bootstrap.min.css">
+	<link rel="stylesheet" href="./css/all.css">
 </head>
 
 <body>
@@ -44,6 +45,24 @@
 
 	</main>
 
+	<div class="toast-container position-absolute top-0 end-0 m-3">
+
+	</div>
+
+	<template id="templateToast">
+		<div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="toast-header">
+				<i  class="fa fa-meteor rounded me-2" alt="..."></i>
+				<strong class="me-auto">Bootstrap</strong>
+				<small class="text-muted">just now</small>
+				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+			<div class="toast-body">
+				See? Just like this.
+			</div>
+		</div>
+	</template>
+	<script src="./popper.min.js"></script>
 	<script src="./bootstrap.min.js"></script>
 	<script src="./newProducts.js"></script>
 </body>

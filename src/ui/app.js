@@ -18,32 +18,42 @@ window.addEventListener('load', async () => {
 	console.log(products);
 	renderProducts(products, currency, productsTable);
 	//renderPagination(pages, pageItemsContainer);
-	
+
 });
 
-const renderProducts = (products,currency, container) => {
+const renderProducts = (products, currency, container) => {
 	let html = '';
 
 	products.forEach((product) => {
 		html += `
 			<tr id="product-${product.dataValues.id}">
 				<td id="product-name-${product.dataValues.id}">
+
 					<button class="btn btn-sm btn-danger rounded-circle" onclick="deleteProduct(${product.dataValues.id})"><i class="fa fa-trash-alt"></i></button>
+
 					<button class="btn btn-sm btn-secondary rounded-circle" onclick="editProductName(${product.dataValues.id})"><i class="fa fa-pen"></i></button> 
+
 					<span class="product-name">${product.dataValues.name}<span></td>
-				<td> ${product.dataValues.price} </td>
-				<td> ${(product.dataValues.price * currency.price).toFixed(2)}
+
+				<td id="product-price-${product.dataValues.id}" >
+
+					<button class="btn btn-sm btn-secondary rounded-circle" onclick="editProductPrice(${product.dataValues.id})"><i class="fa fa-pen"></i></button> 
+
+					<span class="product-price">${product.dataValues.price}</span> 
+
+				</td>
+				<td id="product-price-bs-${product.dataValues.id}"> ${(product.dataValues.price * currency.price).toFixed(2)}
 			</tr>
 		`;
 	});
 	container.innerHTML = html;
 }
 
-async function deleteProduct(id){
+async function deleteProduct(id) {
 
 	const result = await ipcRenderer.invoke('deleteProduct', id);
 
-	if(!result){
+	if (!result) {
 		alert('Error when delete product');
 	}
 
@@ -51,7 +61,7 @@ async function deleteProduct(id){
 	productNameRow.remove();
 }
 
-function editProductName(id){
+function editProductName(id) {
 
 	const productNameRow = document.getElementById('product-name-' + id);
 	const productNameCell = productNameRow.querySelector('span.product-name');
@@ -63,12 +73,12 @@ function editProductName(id){
 	`;
 }
 
-async function saveProductNameEdited(id){
+async function saveProductNameEdited(id) {
 	const productNameRow = document.getElementById('product-name-' + id);
 	const productName = productNameRow.querySelector('input').value;
-	
+
 	const result = await ipcRenderer.invoke('updateNameProduct', id, productName);
-	if(result){
+	if (result) {
 		alert('ok');
 	}
 
@@ -79,8 +89,34 @@ async function saveProductNameEdited(id){
 	`;
 }
 
-function renderPagination(pages, container){
-	
+function editProductPrice(id) {
+	const productPriceRow = document.getElementById('product-price-' + id);
+	const productPriceCell = productPriceRow.querySelector('span.product-price');
+
+	productPriceRow.innerHTML = `
+		<button class="btn btn-sm btn-secondary rounded-circle" onclick="saveProductPriceEdited(${id})"><i class="fa fa-save"></i></button> 
+		<input type="text" value="${productPriceCell.textContent.trim()}"/>
+	`;
+}
+
+async function saveProductPriceEdited(id) {
+	const productPriceRow = document.getElementById('product-price-' + id);
+	const productPrice = productPriceRow.querySelector('input').value;
+
+	productPriceRow.innerHTML = `
+
+		<button class="btn btn-sm btn-secondary rounded-circle" onclick="editProductPrice(${id})"><i class="fa fa-pen"></i></button>
+		<span class="product-price">${productPrice.trim()}</span>
+	`;
+
+	const productPriceBs = document.getElementById('product-price-bs-' + id);
+	const currency = await window.ipc.currency();
+
+	productPriceBs.textContent = (parseFloat(productPrice) * currency.price).toFixed(2);
+}
+
+function renderPagination(pages, container) {
+
 	// crear los li de la paginacion
 	let pagination = '';
 
