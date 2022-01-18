@@ -62,6 +62,11 @@ const updateProductName = async (id, name) =>{
 	return Boolean(result);
 }
 
+const updateProductPrice = async (id, price) =>{
+	const result = await Product.update({price}, {where: {id}});
+	return Boolean(result);
+}
+
 const deleteProduct = async (id) =>{
 	const result = await Product.destroy({where: {id}});
 	return Boolean(result);
@@ -75,4 +80,5 @@ module.exports = {
 	paginate,
 	updateProductName,
 	deleteProduct,
+	updateProductPrice,
 }

@@ -70,7 +70,7 @@ function editProductName(id) {
 		<button class="btn btn-sm btn-danger rounded-circle" onclick="deleteProduct(${id}})"><i class="fa fa-trash-alt"></i></button>
 		<button class="btn btn-sm btn-secondary rounded-circle" onclick="saveProductNameEdited(${id})"><i class="fa fa-save"></i></button> 
 		<input type="text" value="${productNameCell.textContent.trim()}"/>
-	`;
+	`; 
 }
 
 async function saveProductNameEdited(id) {
@@ -95,13 +95,19 @@ function editProductPrice(id) {
 
 	productPriceRow.innerHTML = `
 		<button class="btn btn-sm btn-secondary rounded-circle" onclick="saveProductPriceEdited(${id})"><i class="fa fa-save"></i></button> 
-		<input type="text" value="${productPriceCell.textContent.trim()}"/>
+		<input type="number"  min="0.1" step="0.1" value="${productPriceCell.textContent.trim()}"/>
 	`;
 }
 
 async function saveProductPriceEdited(id) {
 	const productPriceRow = document.getElementById('product-price-' + id);
 	const productPrice = productPriceRow.querySelector('input').value;
+
+	try{
+		const result = await ipcRenderer.invoke('updateProductPrice',id, productPrice);
+	}catch(err){
+		console.error(err);
+	}
 
 	productPriceRow.innerHTML = `
 

@@ -53,6 +53,8 @@ ipcMain.handle('paginate', async (event, config) => await services.paginate(conf
 
 ipcMain.handle('updateNameProduct', async (event, id, name)=> await services.updateProductName(id, name));
 
+ipcMain.handle('updateProductPrice', async (event, id, price)=> await services.updateProductPrice(id, price));
+
 ipcMain.handle('deleteProduct', async (event, id) => await services.deleteProduct(id));
 
 const template = [
