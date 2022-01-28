@@ -35,7 +35,7 @@ ipcMain.handle('getProducts', async () => {
 });
 
 ipcMain.handle('getCurrency', async () => {
-	let currency = await services.getCurrency();
+	let currency = await currencyServices.getCurrency();
 	currency = currency.dataValues;
 	return { name: currency.name, price: currency.price, id: currency.id };
 });

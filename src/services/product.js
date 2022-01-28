@@ -16,15 +16,6 @@ const getProducts = async () =>{
 	}
 }
 
-const getCurrency = async ()=>{
-	try{
-		const currency = await Current.findOne({where:{}});
-		return currency;
-	}catch(error){
-		console.log(error);
-	}
-}
-
 const searchProduct = async (nameProduct)=>{
 	const op = sequelize.Op;
 
@@ -75,7 +66,6 @@ const deleteProduct = async (id) =>{
 module.exports = {
 	saveProduct,
 	getProducts,
-	getCurrency,
 	searchProduct,
 	paginate,
 	updateProductName,
