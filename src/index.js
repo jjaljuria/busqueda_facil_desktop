@@ -1,12 +1,12 @@
-const {createWindowMain, createMenu} = require('./main.js');
+const { createWindowMain, createMenu } = require('./main.js');
 const { app } = require('electron');
-const {getConnection} = require('./databases');
+require('./databases.js');
 
 require('electron-reload')(__dirname);
 
-app.whenReady().then(()=>{
-	
+app.whenReady().then(() => {
+
 	createWindowMain();
 	createMenu();
-	
+
 });

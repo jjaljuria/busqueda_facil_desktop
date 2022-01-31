@@ -1,45 +1,23 @@
-const sqlite = require('sqlite3').verbose();
-const path = require('path');
 const {Currency} = require('./models');
+const { Sequelize } = require('sequelize');
+const { Umzug, SequelizeStorage } = require('umzug');
+const sequelize = new Sequelize({ dialect: 'sqlite', storage: './db/busqueda_facil.sqlite3' });
 
-
-const db = new sqlite.Database(path.join(__dirname, '../db/busqueda_facil.sqlite3'),async (err) =>{
-	if(err){
-		console.error(err);
-	}else{
-		
-		const currency = await Currency.findOne({where: {}});
-		if(!currency){
-			const firstCurrency = await Currency.create({
-				name: 'USD',
-				price: 0,
-			});
-			console.log('firstCurrency: ', firstCurrency);
-		}
-        console.log('database ok');
-	}
+const umzug = new Umzug({
+	migrations: { glob: './src/migrations/*.js' },
+	context: sequelize.getQueryInterface(),
+	storage: new SequelizeStorage({ sequelize }),
+	logger: console,
 });
 
-db.on('close', ()=> db.close());
-
-db.query = function (sql, params) {
-	params = params || [];
-	let that = this;
-	return new Promise((resolve, reject) => {
-		that.all(sql, params, function (error, rows) {
-			console.log(sql, rows);
-			if (error)
-				reject(error);
-			else
-				resolve(rows);
-		})
-	})
-};
-
-function getConnection(){
-	return db;
-}
-
-module.exports = {
-	getConnection
-}
+(async () => {
+	await umzug.up();
+	const currency = await Currency.findOne({ where: {} });
+	if (!currency) {
+		const firstCurrency = await Currency.create({
+			name: 'USD',
+			price: 0,
+		});
+		console.log('firstCurrency: ', firstCurrency);
+	}
+})();
