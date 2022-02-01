@@ -159,7 +159,7 @@ searchButton.addEventListener('click', async (event) => {
 exchangeUpdate.addEventListener('click', async (event) => {
 	const exchangeValue = exchangeInput.value;
 	const newExchangeValue = await window.ipc.updateExchange({ id: exchangeInput.dataset.id, newValue: exchangeValue });
-	console.log(newExchangeValue);
+	window.location.reload();
 })
 
 searchButton.addEventListener('click', async () => {
