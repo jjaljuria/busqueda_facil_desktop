@@ -12,7 +12,13 @@ const umzug = new Umzug({
 
 (async () => {
 	await umzug.up();
-	const currency = await Currency.findOne({ where: {} });
+	let currency = null;
+	try{
+		currency = await Currency.findOne({ where: {} });
+	}catch(err){
+		console.log({err});
+	}
+	
 	if (!currency) {
 		const firstCurrency = await Currency.create({
 			name: 'USD',
