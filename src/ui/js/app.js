@@ -24,6 +24,8 @@ const renderProducts = (products, currency, container) => {
   let html = "";
 
   products.forEach((product) => {
+    const id = product.dataValues.id;
+    const productPrice = product.dataValues.price;
     html += `
 			<tr id="product-${product.dataValues.id}">
 				<td id="product-name-${product.dataValues.id}">
@@ -40,11 +42,7 @@ const renderProducts = (products, currency, container) => {
 
 				<td id="product-price-${product.dataValues.id}" >
 
-					<button class="btn btn-sm btn-secondary rounded-circle" onclick="editProductPrice(${
-            product.dataValues.id
-          })"><i class="fa fa-pen"></i></button> 
-
-					<span class="product-price">${product.dataValues.price}</span> 
+					${renderProductPrice({ id, price: productPrice })}
 
 				</td>
 				<td id="product-price-bs-${product.dataValues.id}"> ${(
@@ -55,6 +53,11 @@ const renderProducts = (products, currency, container) => {
   });
   container.innerHTML = html;
 };
+
+function renderProductPrice({ id, price }) {
+  return `<button class="btn btn-sm btn-secondary rounded-circle" onclick="editProductPrice(${id})"><i class="fa fa-pen"></i></button> 
+	<span class="product-price">${price}</span>`;
+}
 
 async function deleteProduct(id) {
   const result = await window.ipc.deleteProduct(id);
@@ -96,39 +99,47 @@ async function saveProductNameEdited(id) {
 
 function editProductPrice(id) {
   const productPriceRow = document.getElementById("product-price-" + id);
-  const productPriceCell = productPriceRow.querySelector("span.product-price");
+  const currentProductPrice = productPriceRow
+    .querySelector("span.product-price")
+    .textContent.trim();
 
-  productPriceRow.innerHTML = `
-		<button class="btn btn-sm btn-secondary rounded-circle" onclick="saveProductPriceEdited(${id})"><i class="fa fa-save"></i></button> 
-		<input type="number"  min="0.1" step="0.1" value="${productPriceCell.textContent.trim()}"/>
+  productPriceRow.innerHTML = renderEditorProductPrice(id, currentProductPrice);
+}
+
+function renderEditorProductPrice(id, currentProductPrice) {
+  return `
+		<button class="btn btn-sm btn-secondary rounded-circle" onclick="saveProductPriceEdited(${id}, ${currentProductPrice})"><i class="fa fa-save"></i></button> 
+		<input type="number"  min="0.1" step="0.1" value="${currentProductPrice}"/>
 	`;
 }
 
-async function saveProductPriceEdited(id) {
+async function saveProductPriceEdited(id, currentProductPrice) {
   const productPriceRow = document.getElementById("product-price-" + id);
-  const productPrice = productPriceRow.querySelector("input").value;
+  let newProductPrice = productPriceRow.querySelector("input").value;
 
   try {
-    const result = await ipcRenderer.invoke(
-      "updateProductPrice",
-      id,
-      productPrice
-    );
+    const result = await window.ipc.updateProductPrice(id, newProductPrice);
+    if (!result) newProductPrice = currentProductPrice;
   } catch (err) {
     console.error(err);
+    newProductPrice = currentProductPrice;
   }
 
-  productPriceRow.innerHTML = `
+  await renderNewProductPrice({
+    container: productPriceRow,
+    id,
+    newProductPrice,
+  });
+}
 
-		<button class="btn btn-sm btn-secondary rounded-circle" onclick="editProductPrice(${id})"><i class="fa fa-pen"></i></button>
-		<span class="product-price">${productPrice.trim()}</span>
-	`;
+async function renderNewProductPrice({ container, newProductPrice, id }) {
+  container.innerHTML = renderProductPrice({ id, price: newProductPrice });
 
   const productPriceBs = document.getElementById("product-price-bs-" + id);
   const currency = await window.ipc.currency();
 
   productPriceBs.textContent = (
-    parseFloat(productPrice) * currency.price
+    parseFloat(newProductPrice) * currency.price
   ).toFixed(2);
 }
 

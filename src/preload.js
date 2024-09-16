@@ -34,6 +34,13 @@ contextBridge.exposeInMainWorld("ipc", {
   async deleteProduct(id) {
     return await ipcRenderer.invoke("deleteProduct", id);
   },
+  async updateProductPrice(id, price) {
+    return await ipcRenderer.invoke(
+      "updateProductPrice",
+      id,
+      parseFloat(price)
+    );
+  },
   updateMainWindow() {
     return ipcRenderer.invoke("newProductHaveCreated");
   },

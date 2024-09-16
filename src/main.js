@@ -64,10 +64,9 @@ ipcMain.handle(
   async (event, id, name) => await services.updateProductName(id, name)
 );
 
-ipcMain.handle(
-  "updateProductPrice",
-  async (event, id, price) => await services.updateProductPrice(id, price)
-);
+ipcMain.handle("updateProductPrice", async (event, id, price) => {
+  return await services.updateProductPrice(id, price);
+});
 
 ipcMain.handle(
   "deleteProduct",
