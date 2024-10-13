@@ -41,6 +41,11 @@ contextBridge.exposeInMainWorld("ipc", {
       parseFloat(price)
     );
   },
+  async updateNameProduct(id, newName) {
+    if (!(id && newName)) return false;
+
+    return await ipcRenderer.invoke("updateNameProduct", id, newName);
+  },
   updateMainWindow() {
     return ipcRenderer.invoke("newProductHaveCreated");
   },

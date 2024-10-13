@@ -50,7 +50,8 @@ const paginate = async ({ pages = 10, offset }) => {
 
 const updateProductName = async (id, name) => {
   const result = await Product.update({ name }, { where: { id } });
-  return Boolean(result);
+
+  return Boolean(result.length);
 };
 
 const updateProductPrice = async (id, price) => {

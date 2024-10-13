@@ -70,30 +70,37 @@ async function deleteProduct(id) {
   productNameRow.remove();
 }
 
+let productNameOld = "";
 function editProductName(id) {
   const productNameRow = document.getElementById("product-name-" + id);
   const productNameCell = productNameRow.querySelector("span.product-name");
+  const productName = productNameCell.textContent.trim();
+
+  productNameOld = productName;
 
   productNameRow.innerHTML = `
 		<button class="btn btn-sm btn-danger rounded-circle" onclick="deleteProduct(${id}})"><i class="fa fa-trash-alt"></i></button>
 		<button class="btn btn-sm btn-secondary rounded-circle" onclick="saveProductNameEdited(${id})"><i class="fa fa-save"></i></button> 
-		<input type="text" value="${productNameCell.textContent.trim()}"/>
+		<input type="text" value="${productName}"/>
 	`;
 }
 
 async function saveProductNameEdited(id) {
   const productNameRow = document.getElementById("product-name-" + id);
-  const productName = productNameRow.querySelector("input").value;
+  let productName = productNameRow.querySelector("input").value.trim();
 
-  const result = await ipcRenderer.invoke("updateNameProduct", id, productName);
+  const result = await window.ipc.updateNameProduct(id, productName);
   if (result) {
     alert("ok");
+  } else {
+    alert("Error");
+    productName = productNameOld;
   }
 
   productNameRow.innerHTML = `
 		<button class="btn btn-sm btn-danger rounded-circle" onclick="deleteProduct(${id}})"><i class="fa fa-trash-alt"></i></button>
 		<button class="btn btn-sm btn-secondary rounded-circle" onclick="editProductName(${id})"><i class="fa fa-pen"></i></button>
-		<span class="product-name">${productName.trim()}</span>
+		<span class="product-name">${productName}</span>
 	`;
 }
 
