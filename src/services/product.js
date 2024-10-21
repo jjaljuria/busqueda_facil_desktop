@@ -3,7 +3,6 @@ const sequelize = require("sequelize");
 
 const saveProduct = async ({ name, price }) => {
   const product = await Product.create({ name, price });
-  console.log(product);
   return product;
 };
 
@@ -35,13 +34,12 @@ const searchProduct = async (nameProduct) => {
 };
 
 const paginate = async ({ pages = 10, offset }) => {
-  console.log(pages, offset);
+
   try {
     const { count, rows } = await Product.findAndCountAll({
       limit: pages,
       offset,
     });
-    console.log([Math.ceil(count / pages), rows]);
     return [Math.ceil(count / pages), rows];
   } catch (err) {
     console.error("paginate invalid", err);

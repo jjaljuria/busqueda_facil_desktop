@@ -15,7 +15,6 @@ window.addEventListener("load", async () => {
   const products = await window.ipc.products();
   exchangeInput.value = currency.price;
   exchangeInput.dataset.id = currency.id;
-  console.log(products);
   renderProducts(products, currency, productsTable);
   //renderPagination(pages, pageItemsContainer);
 });

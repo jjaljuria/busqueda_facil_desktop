@@ -28,7 +28,6 @@ contextBridge.exposeInMainWorld("ipc", {
   },
   async paginate({ pages = 0, currentPage = 0 }) {
     const offset = pages * (currentPage - 1);
-    console.log({ offset }, { currentPage });
     return await ipcRenderer.invoke("paginate", { pages, offset });
   },
   async deleteProduct(id) {
@@ -49,5 +48,4 @@ contextBridge.exposeInMainWorld("ipc", {
   updateMainWindow() {
     return ipcRenderer.invoke("newProductHaveCreated");
   },
-  ipcRenderer,
 });
